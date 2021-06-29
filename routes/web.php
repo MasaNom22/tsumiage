@@ -39,4 +39,6 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::get('/edit/{post}', 'PostController@edit')->name('edit')->middleware('auth');
     //投稿更新
     Route::post('/update/{post}', 'PostController@update')->name('update')->middleware('auth');
+    //削除機能
+    Route::delete('/delete/{post}', 'PostController@delete')->name('delete')->middleware('auth');
 });

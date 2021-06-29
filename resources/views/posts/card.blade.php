@@ -39,6 +39,11 @@
               <a class="dropdown-item" href="{{ route('posts.edit', ['post' => $post]) }}">
                 <i class="fas fa-pen mr-1"></i>投稿を編集する
               </a>
+              <div class="dropdown-divider"></div>
+                                    {!! Form::model($post, ['route' => ['posts.delete', $post], 'method' => 'delete']) !!}
+                                    {!! Form::submit('投稿を削除する', ['class' => 'dropdown-item text-danger ']) !!}
+                                    {!! Form::close() !!}
+                                  </div>
 
           </div>
         </div>

@@ -36,7 +36,7 @@ class PostController extends Controller
         $post->user_id = $request->user()->id;
         $post->save();
 
-        return view('/home');
+        return view('/');
     }
     
     public function show (Post $post)
@@ -55,13 +55,15 @@ class PostController extends Controller
 
     public function update (Post $post, PostRequest $request)
     {
-        $post->title = $request->title;
-        $post->study_date = $request->study_date;
-        $post->study_hour = $request->study_hour;
-        $post->study_time = $request->study_time;
-        $post->content = $request->content;
-        $post->save();
+        $post->fill($request->all())->save();
 
-        return Redirect::back()->with('flash_message','積み上げ内容を更新しました。');
+        return Redirect::back()->with('update_message','積み上げ内容を更新しました。');
     }
+
+    public function delete(Post $post)
+    {
+        $post->delete();
+        return redirect('/')->with('delete_message','積み上げ内容を削除しました。');
+    }
+
 }
