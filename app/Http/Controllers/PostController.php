@@ -7,6 +7,7 @@ use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Redirect;
+use Session;
 
 class PostController extends Controller
 {
@@ -36,7 +37,7 @@ class PostController extends Controller
         $post->user_id = $request->user()->id;
         $post->save();
 
-        return view('/');
+        return view('home');
     }
     
     public function show (Post $post)
@@ -56,14 +57,15 @@ class PostController extends Controller
     public function update (Post $post, PostRequest $request)
     {
         $post->fill($request->all())->save();
-
+        //use Redirectが必要
         return Redirect::back()->with('update_message','積み上げ内容を更新しました。');
     }
 
     public function delete(Post $post)
     {
         $post->delete();
-        return redirect('/')->with('delete_message','積み上げ内容を削除しました。');
+        
+        return Redirect::back()->with('delete_message','積み上げ内容を削除しました。');
     }
 
 }
