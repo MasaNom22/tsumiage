@@ -29,6 +29,10 @@
                   <label for="email">メールアドレス</label>
                     <input class="form-control" type="text" id="email" name="email" value="{{ $user->email ?? old('email') }}">
                 </div>
+                <div class="form-group">
+                  <label for="self_introduction">自己紹介文</label>
+                    <textarea class="form-control" type="textarea" cols="40" rows="5" id="self_introduction" name="self_introduction">{{ $user->self_introduction  }}</textarea>
+                </div>
                 
 
                 <div class="d-flex justify-content-between align-items-center">
@@ -44,4 +48,23 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('scripts')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script type="text/javascript">
+  @if (session('update_profile_message'))
+      $(function () { 
+        toastr.options =
+  {
+  	"closeButton" : true,
+  	"progressBar" : true,
+    "timeOut": "1200",
+  }
+              toastr.success('{{ session('update_profile_message') }}');
+      });
+  @endif
+</script>
 @endsection
