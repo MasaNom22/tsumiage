@@ -10,9 +10,9 @@
             <div class="card">
                 <div class="d-inline-flex">
                     <div class="p-5 d-flex flex-column">
-                        @if(isset($user->uploadimages))
-                        <img src="{{ Storage::url($user->uploadimages->file_path) }}" class="rounded-circle" width="100"
-                            height="100">
+                        @if(isset($user->image))
+                        <img src="{{ Storage::url($user->image) }}" class="rounded-circle" width="150"
+                            height="150">
                         @else
                         <i class="fas fa-user-circle fa-9x mr-1"></i>
                         @endif
@@ -33,8 +33,22 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="d-flex justify-content-end mt-4">
-                        <div>{{ $user->self_introduction }}</div>                            
+                        <div class="d-flex justify-content-end">
+                            <div class="p-2 d-flex flex-column align-items-center">
+                                <p class="font-weight-bold">投稿数</p>
+                                <span>{{ $posts_count }}</span>
+                            </div>
+                            <div class="p-2 d-flex flex-column align-items-center">
+                                <p class="font-weight-bold">フォロー数</p>
+                                <span></span>
+                            </div>
+                            <div class="p-2 d-flex flex-column align-items-center">
+                                <p class="font-weight-bold">フォロワー数</p>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-start mt-4">
+                            <div>{{ $user->self_introduction }}</div>                            
                         </div>
                     </div>
                 </div>

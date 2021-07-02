@@ -25,7 +25,7 @@ Route::prefix('users')->name('users.')->group(function() {
     //ユーザー編集画面
     Route::get('/edit/{user}', 'UserController@edit')->name('edit')->middleware('auth');
     //ユーザー編集画面
-    Route::patch('/update/{user}', 'UserController@update')->name('update')->middleware('auth');    
+    Route::patch('/update/{user}', 'UserController@update')->name('update')->middleware('auth');   
 });
 
 Route::prefix('posts')->name('posts.')->group(function () {

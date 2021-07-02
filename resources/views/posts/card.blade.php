@@ -3,9 +3,9 @@
     <div class="card article-card">
       <div class="card-body d-flex flex-row row">
         <div class="col-2">
-          @if(isset($article->user->uploadimages))
+          @if(isset($post->user->image))
           <a href="{{ route('users.show', ['user' => $post->user]) }}" class="text-dark">
-            <img class="user-icon rounded-circle" src="{{ Storage::url($article->user->uploadimages->file_path) }}"
+            <img class="user-icon rounded-circle" src="{{ Storage::url($post->user->image) }}"
               width="60" height="60"  alt="写真" />
           </a>
           @else

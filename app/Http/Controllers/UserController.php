@@ -10,8 +10,10 @@ class UserController extends Controller
 {
     public function show(User $user)
     {
+        $posts_count = $user->posts()->count();
         return view('users.show', [
             'user' => $user,
+            'posts_count' => $posts_count,
         ]);
     }
 
@@ -24,9 +26,21 @@ class UserController extends Controller
 
     public function update(User $user, Request $request)
     {
+        $request->validate([
+            'image'=>'file|image|mimes:png,jpeg,jpg|max:2048',
+        ]);
+        $upload_image = $request->file('image');
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->self_introduction = $request->self_introduction;
+        if($upload_image) {
+            $file_name = $upload_image->getClientOriginalName();
+            $path = $upload_image->storeAs('public/images', $file_name);
+            $user->image = $path;
+        } else {
+            $file_name = "";
+        }
         $user->save();
         //use Redirectが必要
         return Redirect::back()->with('update_profile_message', 'プロフィールを更新しました。');

@@ -15,6 +15,7 @@ class AddColumnToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('self_introduction')->default('よろしくお願いします。');
+            $table->string('image')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class AddColumnToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('self_introduction');
+            $table->dropColumn('image');
         });
     }
 }
