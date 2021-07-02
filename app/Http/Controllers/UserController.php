@@ -11,6 +11,10 @@ class UserController extends Controller
     public function show(User $user)
     {
         $posts_count = $user->posts()->count();
+        // ユーザのフォロワーをカウントを取得
+        $user->loadCount('followers');
+        // ユーザのフォローユーザーを取得
+        $user->loadCount('followings');
         return view('users.show', [
             'user' => $user,
             'posts_count' => $posts_count,
@@ -44,6 +48,30 @@ class UserController extends Controller
         $user->save();
         //use Redirectが必要
         return Redirect::back()->with('update_profile_message', 'プロフィールを更新しました。');
+    }
+
+    public function follow(Request $request, User $user)
+    {
+
+        if ($user->id === $request->user()->id) {
+            return abort('404', 'Cannot follow yourself.');
+        }
+
+        $request->user()->followings()->detach($user->id);
+        $request->user()->followings()->attach($user->id);
+
+        return Redirect::back()->with('follow_message', 'フォローしました。');
+    }
+
+    public function unfollow(Request $request, User $user)
+    {
+        if ($user->id === $request->user()->id) {
+            return abort('404', 'Cannot follow yourself.');
+        }
+
+        $request->user()->followings()->detach($user->id);
+
+        return Redirect::back()->with('unfollow_message', 'フォローを外しました。');
     }
 
 }

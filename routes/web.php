@@ -26,6 +26,10 @@ Route::prefix('users')->name('users.')->group(function() {
     Route::get('/edit/{user}', 'UserController@edit')->name('edit')->middleware('auth');
     //ユーザー編集画面
     Route::patch('/update/{user}', 'UserController@update')->name('update')->middleware('auth');   
+    //フォロー機能
+    Route::post('/follow/{user}', 'UserController@follow')->name('follow')->middleware('auth');
+    //アンフォロー機能
+    Route::delete('/unfollow/{user}', 'UserController@unfollow')->name('unfollow')->middleware('auth');
 });
 
 Route::prefix('posts')->name('posts.')->group(function () {
