@@ -31,7 +31,7 @@
 @enderror
                   <tr>
                     <th>学習日</th>
-                    <td><input type="text" class="form-control" name="study_date" id="study_date" value="{{ old('study_date') }}" /></td>
+                    <td><input type="text" class="form-control" name="study_date" id="study_date" value="{{ old('study_date') ?? 'today' }}" /></td>
                     @error('study_date')
   <div class="alert alert-danger">{{$message}}</div>
 @enderror
