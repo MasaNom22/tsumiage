@@ -8,6 +8,11 @@ use Redirect;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+    
     public function show(User $user)
     {
         $posts_count = $user->posts()->count();
