@@ -74,7 +74,7 @@
         @endif
       </div>
       <div class="card-body pt-0 pb-2 pl-3">
-        
+        @include ('favorites.favorites_button')
       </div>
     </div>
   </div>

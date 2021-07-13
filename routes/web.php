@@ -9,7 +9,7 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', 'PostController@index')->name('posts.index');
 
@@ -19,13 +19,13 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('users')->name('users.')->group(function() {
+Route::prefix('users')->name('users.')->group(function () {
     //ユーザー詳細画面
     Route::get('/{user}', 'UserController@show')->name('show')->middleware('auth');
     //ユーザー編集画面
     Route::get('/edit/{user}', 'UserController@edit')->name('edit')->middleware('auth');
     //ユーザー編集画面
-    Route::patch('/update/{user}', 'UserController@update')->name('update')->middleware('auth');   
+    Route::patch('/update/{user}', 'UserController@update')->name('update')->middleware('auth');
     //フォロー機能
     Route::post('/follow/{user}', 'UserController@follow')->name('follow')->middleware('auth');
     //アンフォロー機能
@@ -45,4 +45,14 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::post('/update/{post}', 'PostController@update')->name('update')->middleware('auth');
     //削除機能
     Route::delete('/delete/{post}', 'PostController@delete')->name('delete')->middleware('auth');
+});
+
+Route::prefix('comments')->name('comments.')->group(function () {
+//登録機能
+    Route::post('/{post}/store', 'CommentController@store')->name('store')->middleware('auth');
+});
+
+Route::prefix('favorites')->name('favorites.')->group(function () {
+    Route::post('/{post}/like', 'PostController@favorite')->name('like')->middleware('auth');
+    Route::delete('/{post}/like', 'PostController@unfavorite')->name('unlike')->middleware('auth');
 });
