@@ -42,15 +42,23 @@
                 <tr class="text-center">
                   <th>学習時間</th>
                   <td class="select"><select name="study_hour">
-                      @for ($i = 1; $i <= 23; $i ++) <option value={{ $i  }}>{{ $i }}</option>
-                        @endfor
-                        <option value={{ $post->study_hour }} selected>{{ $post->study_hour}}</option>
+                      @for ($i = 1; $i <= 23; $i ++) 
+                        @if ($i == $post->study_hour)
+                          <option value={{ $post->study_hour }} selected>{{ $post->study_hour}}</option>
+                        @else
+                          <option value={{ $i  }}>{{ $i }}</option>
+                        @endif
+                      @endfor
                     </select>時間</td>
                   <td class="select">
                     <select name="study_time">
-                      @for ($i = 0; $i <= 45; $i +=15) <option value={{ $i  }}>{{ $i }}</option>
-                        @endfor
-                        <option value={{ $post->study_time }} selected>{{ $post->study_time}}</option>
+                      @for ($i = 0; $i <= 45; $i +=15) 
+                        @if ($i == $post->study_time)
+                          <option value={{ $post->study_time }} selected>{{ $post->study_time}}</option>
+                        @else
+                          <option value={{ $i  }}>{{ $i }}</option>
+                        @endif
+                      @endfor                        
                     </select>分</td>
                 </tr>
 
