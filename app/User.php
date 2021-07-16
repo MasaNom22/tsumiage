@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     //フォロワーがフォローしているユーザー
     public function followings()
     {
@@ -58,7 +63,7 @@ class User extends Authenticatable
 
     //すでにフォロー中であるかどうか
     public function is_following(User $user)
-    {    
+    {  
         return $this->followings()->where('followee_id', $user->id)->exists();
     }
 
@@ -78,7 +83,7 @@ class User extends Authenticatable
         }
     }
 
-    public function unfollow(User$user)
+    public function unfollow(User $user)
     {
         // すでにフォローしているかの確認
         $exist = $this->is_following($user->id);
@@ -93,4 +98,52 @@ class User extends Authenticatable
             return false;
         }
     }
+
+    public function isFollowedBy(User $user)
+    {
+        return (boolean) $this->followers()->where('follower_id', $user->id)->exists();
+    }
+
+    public function favorites()
+    {
+        $this->belongsToMany(Post::class, 'favorites', 'user_id', 'post_id')->withTimestamps();
+    }
+
+    public function favorite(Post $post)
+    {
+        // すでにfavoriteしているかの確認
+        $exist = $this->is_favoriting($post->id);
+
+        if ($exist) {
+            // すでにfavoriteしていれば何もしない
+            return false;
+        } else {
+            $this->favorites()->attach($post->id);
+            return true;
+        }
+    }
+
+    public function unfavorite(Post $post)
+    {
+        // すでにfavoriteしているかの確認
+        $exist = $this->is_favoriting($post->id);
+        
+        if ($exist) {
+            // すでにfavoriteしていればfavoriteを外す
+            $this->favorites()->detach($post->id);
+            return true;
+        } else {
+            // 未favoriteであれば何もしない
+            return false;
+        }
+    }
+
+    public function is_favoriting($post)
+    {   
+        return $this->favorites()->where('post_id', $post->id)->exists();
+    }
+
+    
+
+    
 }
