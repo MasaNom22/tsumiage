@@ -48,8 +48,12 @@ Route::prefix('posts')->name('posts.')->group(function () {
 });
 
 Route::prefix('comments')->name('comments.')->group(function () {
-//登録機能
+    //登録機能
     Route::post('/{post}/store', 'CommentController@store')->name('store')->middleware('auth');
+    //投稿編集画面
+    Route::get('/edit/{comment}', 'CommentController@edit')->name('edit')->middleware('auth');
+    //投稿更新
+    Route::post('/update/{comment}', 'CommentController@update')->name('update')->middleware('auth');
 });
 
 Route::prefix('favorites')->name('favorites.')->group(function () {
