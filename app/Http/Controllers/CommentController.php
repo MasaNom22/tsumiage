@@ -47,4 +47,10 @@ class CommentController extends Controller
             'comments' => $comments,
         ]);
     }
+
+    public function delete (Comment $comment)
+    {
+        $comment->delete();
+        return Redirect::back()->with('comment_delete_message','コメントを削除しました。');
+    }
 }

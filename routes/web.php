@@ -54,6 +54,8 @@ Route::prefix('comments')->name('comments.')->group(function () {
     Route::get('/edit/{comment}', 'CommentController@edit')->name('edit')->middleware('auth');
     //投稿更新
     Route::post('/update/{comment}', 'CommentController@update')->name('update')->middleware('auth');
+    //削除機能
+    Route::delete('/delete/{comment}', 'CommentController@delete')->name('delete')->middleware('auth');
 });
 
 Route::prefix('favorites')->name('favorites.')->group(function () {
