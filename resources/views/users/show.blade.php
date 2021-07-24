@@ -25,20 +25,20 @@
                         <div class="d-flex">
                             <div>
                                 @if ($user->id === Auth::user()->id)
-                                    <a href="{{ route('users.edit', ['user' => $user]) }}"
-                                        class="btn btn-primary">プロフィールを編集する</a>
+                                <a href="{{ route('users.edit', ['user' => $user]) }}"
+                                    class="btn btn-primary">プロフィールを編集する</a>
                                 @else
-                                    @if (Auth::user()->is_following($user))
-                                        {{-- アンフォローボタンのフォーム --}}
-                                        {!! Form::open(['route' => ['users.unfollow', $user], 'method' => 'delete']) !!}
-                                        {!! Form::submit('フォローを外す', ['class' => "btn btn-primary btn-block"]) !!}
-                                        {!! Form::close() !!}
-                                    @else
-                                        {{-- フォローボタンのフォーム --}}
-                                        {!! Form::open(['route' => ['users.follow', $user], 'method' => 'post']) !!}
-                                        {!! Form::submit('フォローする', ['class' => "btn btn-primary btn-block"]) !!}
-                                        {!! Form::close() !!}
-                                    @endif
+                                @if (Auth::user()->is_following($user))
+                                {{-- アンフォローボタンのフォーム --}}
+                                {!! Form::open(['route' => ['users.unfollow', $user], 'method' => 'delete']) !!}
+                                {!! Form::submit('フォローを外す', ['class' => "btn btn-primary btn-block"]) !!}
+                                {!! Form::close() !!}
+                                @else
+                                {{-- フォローボタンのフォーム --}}
+                                {!! Form::open(['route' => ['users.follow', $user], 'method' => 'post']) !!}
+                                {!! Form::submit('フォローする', ['class' => "btn btn-primary btn-block"]) !!}
+                                {!! Form::close() !!}
+                                @endif
                                 @endif
                             </div>
                         </div>
