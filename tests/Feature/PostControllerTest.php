@@ -55,32 +55,86 @@ class PostControllerTest extends TestCase
     {
 
         $post = factory(Post::class)->create();
-        $user = User::where('id', $post->user_id)->first();
-        $title = $post->title;
-        $content = $post->content;
-        $study_hour = $post->study_hour;
-        $study_time = $post->study_time;
-        $study_date = $post->study_date;
-        $user_id = $post->user_id;
+        $user = $post->user;
 
         $response = $this->actingAs($user)->post(route('posts.store', [
-            'title' => $title,
-            'content' => $content,
-            'study_hour' => $study_hour,
-            'study_time' => $study_time,
-            'study_date' => $study_date,
-            'user_id' => $user_id,
+            'title' => $post->title,
+            'content' => $post->content,
+            'study_hour' => $post->study_hour,
+            'study_time' => $post->study_time,
+            'study_date' => $post->study_date,
+            'user_id' => $post->user_id,
         ]));
 
         $response->assertRedirect(route('posts.index'));
         //登録したデータが存在するかどうか
         $this->assertDatabaseHas('posts', [
-            'title' => $title,
-            'content' => $content,
-            'study_hour' => $study_hour,
-            'study_time' => $study_time,
-            'study_date' => $study_date,
-            'user_id' => $user_id,
+            'title' => $post->title,
+            'content' => $post->content,
+            'study_hour' => $post->study_hour,
+            'study_time' => $post->study_time,
+            'study_date' => $post->study_date,
+            'user_id' => $post->user_id,
         ]);
+    }
+
+    public function testGuestEdit()
+    {
+        $post = factory(Post::class)->create();
+        $user = $post->user;
+        $response = $this->get(route('posts.edit', ['post' => $post]));
+
+        $response->assertRedirect(route('login'));
+    }
+
+    public function testAuthEdit()
+    {
+        $post = factory(Post::class)->create();
+        $user = $post->user;
+        $response = $this->actingAs($user)
+        ->get(route('posts.edit', ['post' => $post]));
+
+        $response->assertStatus(200)->assertViewIs('posts.edit')
+        ->assertSee($post->content);
+    }
+
+    public function testGuestUpdate()
+    {
+        $post = factory(Post::class)->create();
+        $user = $post->user;
+        $response = $this->post(route('posts.update', ['post' => $post]));
+
+        $response->assertRedirect(route('login'));
+    }
+
+    public function testAuthUpdate()
+    {
+        $post = factory(Post::class)->create();
+        $user = $post->user;
+        $post1 = factory(Post::class)->create();
+
+        $response = $this->actingAs($user)->post(route('posts.store', [
+            'title' => $post->title,
+            'content' => $post->content,
+            'study_hour' => $post->study_hour,
+            'study_time' => $post->study_time,
+            'study_date' => $post->study_date,
+            'user_id' => $post->user_id,
+        ]));
+        
+        $response = $this->actingAs($user)
+        ->post(route('posts.update', ['post' => $post1]));
+
+        $this->assertDatabaseHas('posts', [
+            'title' => $post1->title,
+            'content' => $post1->content,
+            'study_hour' => $post1->study_hour,
+            'study_time' => $post1->study_time,
+            'study_date' => $post1->study_date,
+            'user_id' => $post1->user_id,
+        ]);
+
+        $response->assertStatus(302);
+        
     }
 }
