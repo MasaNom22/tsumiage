@@ -137,4 +137,32 @@ class PostControllerTest extends TestCase
         $response->assertStatus(302);
         
     }
+
+    public function testGuestDelete()
+    {
+        $post = factory(Post::class)->create();
+        $user = $post->user;
+        $response = $this->delete(route('posts.delete', ['post' => $post]));
+
+        $response->assertRedirect(route('login'));
+    }
+
+    public function testAuthDelete()
+    {
+        $post = factory(Post::class)->create();
+        $user = $post->user;
+        $response = $this->actingAs($user)
+        ->delete(route('posts.delete', ['post' => $post]))
+        ->assertStatus(302)
+        ->assertRedirect(route('posts.index'));
+        //データベースに存在しない
+        $this->assertDatabaseMissing('posts', [
+            'title' => $post->title,
+            'content' => $post->content,
+            'study_hour' => $post->study_hour,
+            'study_time' => $post->study_time,
+            'study_date' => $post->study_date,
+            'user_id' => $post->user_id,
+        ]);
+    }
 }
