@@ -12,9 +12,14 @@ use Session;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $keyword = $request->input('title');
         $all_posts = Post::All()->sortByDesc('created_at');
+
+        if (!empty($keyword)) {
+            $all_posts = Post::where('title', 'like', '%' . $keyword . '%')->get();
+        }
 
         return view('posts.index', [
             'posts' => $all_posts,
