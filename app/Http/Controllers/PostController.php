@@ -96,4 +96,41 @@ class PostController extends Controller
         return Redirect::back()->with('favorite_message','お気に入りを解除しました。');
     }
 
+    public function download_csv(Request $request)
+    {
+
+        return response()->streamDownload(
+            function () {
+                // 出力バッファをopen
+                $stream = fopen('php://output', 'w');
+                // 文字コードをShift-JISに変換
+                stream_filter_prepend($stream, 'convert.iconv.utf-8/cp932//TRANSLIT');
+                // ヘッダー
+                fputcsv($stream, [
+                    '名前',
+                    '記事内容',
+                    '投稿日',
+                    '勉強(時間)',
+                    '勉強(分)',
+                ]);
+                $all_posts = Post::all()->sortByDesc('created_at');
+                // データ
+                foreach ($all_posts as $post) {
+                    fputcsv($stream, [
+                        $post->title,
+                        $post->content,
+                        $post->study_date,
+                        $post->study_hour,
+                        $post->study_time                        
+                    ]);
+                }
+                fclose($stream);
+            },
+            '投稿一覧.csv',
+            [
+                'Content-Type' => 'application/octet-stream',
+            ]
+        );
+    }
+
 }
