@@ -18,6 +18,7 @@
           </div>
           <button type="submit" class="btn btn-primary">検索</button>
       </form>
+      <a class="btn btn-primary " href={!! route('posts.CsvDownload') !!}>投稿一覧CSV出力</a>
     </div>
 
       <main class="col-md-7">
