@@ -45,6 +45,8 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::post('/update/{post}', 'PostController@update')->name('update')->middleware('auth');
     //削除機能
     Route::delete('/delete/{post}', 'PostController@delete')->name('delete')->middleware('auth');
+    //csv出力
+    Route::get('/download_csv', 'PostController@download_csv')->name('CsvDownload');
 });
 
 Route::prefix('comments')->name('comments.')->group(function () {
