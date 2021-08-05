@@ -79,4 +79,18 @@ class UserController extends Controller
         return Redirect::back()->with('unfollow_message', 'フォローを外しました。');
     }
 
+    public function followings(User $user)
+    {
+        
+        // ユーザのフォローユーザーをカウント
+        $user->loadCount('followings');
+        // ユーザのフォローユーザーを取得
+        $followings = $user->followings()->get();
+
+        return view('users.followings', [
+            'user' => $user,
+            'users' => $followings,
+        ]);
+    }
+
 }
